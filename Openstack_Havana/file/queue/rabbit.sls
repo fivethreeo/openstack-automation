@@ -1,8 +1,4 @@
-#!jinja|json
-{
-    "rabbitmq-server": {
-        "pkg": [
-            "installed"
-        ]
-    }
-}
+
+rabbitmq-server:
+  pkg:
+    - installed

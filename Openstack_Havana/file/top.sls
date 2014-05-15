@@ -1,4 +1,4 @@
-havana:
+icehouse:
   {{ grains['id'] }}:
     - generics.headers
 {% if 'cluster_ops.list_sls' in salt %}

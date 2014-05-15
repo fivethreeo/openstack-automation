@@ -1,8 +1,3 @@
-#!jinja|json
-{
-    "keystone": {
-        "pkg": [
-            "purged"
-        ]
-    }
-}
+keystone:
+  pkg:
+    - purged

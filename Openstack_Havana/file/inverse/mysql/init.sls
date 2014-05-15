@@ -1,8 +1,3 @@
-#!jinja|ast
-{
-    "mysql-server": {
-        "pkg": [
-            "purged"
-        ]
-    }
-}
+mysql-server:
+  pkg
+    - purged

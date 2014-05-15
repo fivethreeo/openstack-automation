@@ -1,20 +1,9 @@
-#!jinja|json
-{
-    "mysql-client": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "python-mysqldb": {
-        "pkg": [
-            "purged",
-            {
-                "require": [
-                    {
-                        "pkg": "mysql-client"
-                    }
-                ]
-            }
-        ]
-    }
-}
+mysql-client:
+  pkg
+    - purged¨
+
+python-mysqldb:
+  pkg:
+    - purged
+    - require
+      - pkg: mysql-client

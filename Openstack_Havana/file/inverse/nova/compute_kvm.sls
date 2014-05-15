@@ -1,23 +1,8 @@
-#!jinja|json
-{
-    "nova-compute-kvm": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "nova-common": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "nova-compute": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "python-guestfs": {
-        "pkg": [
-            "purged"
-        ]
-    }
-}
+nova-kvm-pkg:
+  pkg:
+    - purged
+    - names:        
+      - nova-compute-kvm
+      - nova-common
+      - nova-compute
+      - python-guestfs 

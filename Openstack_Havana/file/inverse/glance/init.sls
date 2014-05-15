@@ -1,8 +1,3 @@
-#!jinja|json
-{
-    "glance": {
-        "pkg": [
-            "purged"
-        ]
-    }
-}
+glance:
+  pkg:
+    - purged

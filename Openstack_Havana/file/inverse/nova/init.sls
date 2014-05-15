@@ -1,61 +1,19 @@
-#!jinja|json
-{
-    "nova-api": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "nova-conductor": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "nova-scheduler": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "nova-cert": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "nova-consoleauth": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "nova-doc": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "python-novaclient": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "nova-ajax-console-proxy": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "novnc": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "nova-novncproxy": {
-        "pkg": [
-            "purged"
-        ]
-    },
-    "nova_sqlite": {
-        "file": [
-            "absent",
-            {
-                "name": "/var/lib/nova/nova.sqlite"
-            }
-        ]
-    }
-}
+nova-pkg:
+  pkg:
+    - purged
+    - names:
+      - nova-api
+      - nova-conductor
+      - nova-scheduler
+      - nova-cert
+      - nova-consoleauth
+      - nova-doc
+      - python-novaclient
+      - nova-ajax-console-proxy
+      - novnc
+      - nova-novncproxy
+
+nova_sqlite:
+  file:
+    - absent
+    - name: /var/lib/nova/nova.sqlite
