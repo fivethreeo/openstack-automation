@@ -8,88 +8,72 @@ There are several methods for automated deployment of openstack cluster. In this
 Saltstack provides us an infrastructure management framework that makes our job easier. Saltstack supports most of tasks that you would want to perform while installing openstack and more. We might not need any programming to do so. All we do need to do is define our cluster as below.
 
 <pre>
-{
-	"cluster_entities": [
-		"compute",
-		"controller",
-		"network"
-	],
-    "compute": [
-        "venus"
-    ],
-    "controller": [
-        "mercury"
-    ], 
-    "network": [
-		"mercury"
-    ],
-    "neutron": {
-		"metadata_secret": "414c66b22b1e7a20cc35",
-		"intergration_bridge": "br-int",
-		"network_mode": "vlan",
-		"venus": {
-			"Intnet1": {
-				"start_vlan": "100",
-				"end_vlan": "200",
-				"bridge": "br-eth1",
-				"interface": "eth1"
-			}
-		},
-		"mercury": {
-			"Intnet1": {
-				"start_vlan": "100",
-				"end_vlan": "200",
-				"bridge": "br-eth1",
-				"interface": "eth1"
-			},
-			"Extnet": {
-				"bridge": "br-ex",
-				"interface": "eth2"
-			}
-		}
-    },
-    "install": {
-        "controller": [
-            "generics.havana_cloud_repo", 
-            "generics.apt-proxy", 
-            "generics.headers",
-            "generics.host",
-            "mysql",
-            "mysql.client",
-            "mysql.openstack_dbschema",
-            "queue.rabbit",
-            "keystone",
-            "keystone.openstack_tenants",
-            "keystone.openstack_users",
-            "keystone.openstack_services",
-            "glance",
-            "nova",
-            "horizon"
-        ], 
-        "network": [
-            "generics.havana_cloud_repo", 
-            "generics.apt-proxy", 
-            "generics.headers",
-            "generics.host",
-            "neutron",
-            "neutron.openvswitch"
-        ],
-        "compute": [
-            "generics.havana_cloud_repo", 
-            "generics.apt-proxy", 
-            "generics.headers",
-            "generics.host",
-            "nova.compute_kvm",
-            "neutron.openvswitch"
-        ]
-    },
-    "hosts": {
-		"mercury": "mercury_ip_here",
-		"venus": "venus_ip_here",
-		"saturn": "saturn_ip_here",
-		"salt": "sat_master_ip_here"
-    }
-}
+cluster_entities: 
+  - compute
+  - controller
+  - network
+compute: 
+  - venus
+controller: 
+  - mercury
+network: 
+  - mercury
+neutron: 
+  metadata_secret: 414c66b22b1e7a20cc35
+  intergration_bridge: br-int
+  network_mode: vlan
+  venus: 
+    Intnet1: 
+      start_vlan: 100
+      end_vlan: 200
+      bridge: br-eth1
+      interface: eth1
+  mercury: 
+    Intnet1: 
+      start_vlan: 100
+      end_vlan: 200
+      bridge: br-eth1
+      interface: eth1
+    Extnet: 
+      bridge: br-ex
+      interface: eth2
+install: 
+  controller: 
+    - generics.havana_cloud_repo
+    - generics.apt-proxy
+    - generics.headers
+    - generics.host
+    - mysql
+    - mysql.client
+    - mysql.openstack_dbschema
+    - queue.rabbit
+    - keystone
+    - keystone.openstack_tenants
+    - keystone.openstack_users
+    - keystone.openstack_services
+    - glance
+    - nova
+    - horizon
+  network: 
+    - generics.havana_cloud_repo
+    - generics.apt-proxy
+    - generics.headers
+    - generics.host
+    - neutron
+    - neutron.openvswitch
+  compute: 
+    - generics.havana_cloud_repo
+    - generics.apt-proxy
+    - generics.headers
+    - generics.host
+    - nova.compute_kvm
+    - neutron.openvswitch
+hosts: 
+  mercury: mercury_ip_here
+  venus: venus_ip_here
+  saturn: saturn_ip_here
+  salt: sat_master_ip_here
+
 </pre>
 
 What we saw above is the [pillar](http://docs.saltstack.com/topics/pillar/ "Salt Pillar") definition. Should you need to change your cluster definition you do so by changing the pillar and synchronising the changes. Although this file defines your cluster entirely the file in itself can do nothing. The entire project has been checked in [here](https://github.com/Akilesh1597/openstack-automation/ "Openstack-Automation").
@@ -98,16 +82,17 @@ To test it create a new [environment](http://docs.saltstack.com/ref/file_server/
 
 <pre>
 
-file_roots: 
-  base: 
-    - /srv/salt/ 
-  havana: 
-    - (project-directory)/file 
-pillar_roots: 
-  base: 
-    - /srv/pillar 
-  havana: 
-    - (project-directory)/pillar 
+file_roots:
+   base:
+     - /srv/salt/
+   icehouse:
+     - /srv/icehouse/file
+
+pillar_roots:
+  base:
+    - /srv/pillar
+  icehouse:
+    - /srv/icehouse/pillar
 
 </pre>
 
@@ -136,55 +121,48 @@ Cluster Definition
 To make things clear lets have a look at a part of the pillar configuration.
 
 <pre>
-    "cluster_entities": [
-		"compute",
-		"controller",
-		"network"
-	],
-    "compute": [
-        "venus"
-    ],
-    "controller": [
-        "mercury"
-    ], 
-    "network": [
-	"mercury"
-    ],
-    "install": {
-        "controller": [
-            "generics.havana_cloud_repo", 
-            "generics.apt-proxy", 
-            "generics.headers",
-            "generics.host",
-            "mysql",
-            "mysql.client",
-            "mysql.openstack_dbschema",
-            "queue.rabbit",
-            "keystone",
-            "keystone.openstack_tenants",
-            "keystone.openstack_users",
-            "keystone.openstack_services",
-            "glance",
-            "nova",
-            "horizon"
-        ], 
-        "network": [
-            "generics.havana_cloud_repo", 
-            "generics.apt-proxy", 
-            "generics.headers",
-            "generics.host",
-            "neutron",
-            "neutron.openvswitch"
-        ],
-        "compute": [
-            "generics.havana_cloud_repo", 
-            "generics.apt-proxy", 
-            "generics.headers",
-            "generics.host",
-            "nova.compute_kvm",
-            "neutron.openvswitch"
-        ]
-    }
+  
+cluster_entities: 
+  - compute
+  - controller
+  - network
+compute: 
+  - venus
+controller: 
+  - mercury
+network: 
+  - mercury
+install: 
+  controller: 
+    - generics.havana_cloud_repo
+    - generics.apt-proxy
+    - generics.headers
+    - generics.host
+    - mysql
+    - mysql.client
+    - mysql.openstack_dbschema
+    - queue.rabbit
+    - keystone
+    - keystone.openstack_tenants
+    - keystone.openstack_users
+    - keystone.openstack_services
+    - glance
+    - nova
+    - horizon
+  network: 
+    - generics.havana_cloud_repo
+    - generics.apt-proxy
+    - generics.headers
+    - generics.host
+    - neutron
+    - neutron.openvswitch
+  compute: 
+    - generics.havana_cloud_repo
+    - generics.apt-proxy
+    - generics.headers
+    - generics.host
+    - nova.compute_kvm
+    - neutron.openvswitch
 </pre>
 
 This "cluster_entities" defines what are the entities that form the cluster. The controller node, network node and compute node form the entities of an openstack cluster.
@@ -203,70 +181,72 @@ Lets say we need add a new entity called queue_server which will run rabbitmq. T
 2. Define what minions will perform the role of "queue_server"
 3. Finally define which formula deploys a "queue_server" under the "install"."queue_server" section.
 <pre>
-    "cluster_entities": [
-	"compute",
-	"controller",
-	"network",
-	"queue_server"
-	],
-    "compute": [
-        "venus"
-    ],
-    "controller": [
-        "mercury"
-    ], 
-    "network": [
-	"mercury"
-    ],
-    "queue_server": [
-    	"jupiter"
-    ],
-    "install": {
-        "controller": [
-            "generics.havana_cloud_repo", 
-            "generics.apt-proxy", 
-            "generics.headers",
-            "generics.host",
-            "mysql",
-            "mysql.client",
-            "mysql.openstack_dbschema",
-            "keystone",
-            "keystone.openstack_tenants",
-            "keystone.openstack_users",
-            "keystone.openstack_services",
-            "glance",
-            "nova",
-            "horizon"
-        ], 
-        "network": [
-            "generics.havana_cloud_repo", 
-            "generics.apt-proxy", 
-            "generics.headers",
-            "generics.host",
-            "neutron",
-            "neutron.openvswitch"
-        ],
-        "compute": [
-            "generics.havana_cloud_repo", 
-            "generics.apt-proxy", 
-            "generics.headers",
-            "generics.host",
-            "nova.compute_kvm",
-            "neutron.openvswitch"
-        ],
-        "queue_server": [
-            "queue.rabbit"
-        ]
-    }
+ 
+cluster_entities: 
+  - compute
+  - controller
+  - network
+  - queue_server
+compute: 
+  - venus
+controller: 
+  - mercury
+network: 
+  - mercury
+queue_server: 
+  - jupiter
+install: 
+  controller: 
+    - generics.havana_cloud_repo
+    - generics.apt-proxy
+    - generics.headers
+    - generics.host
+    - mysql
+    - mysql.client
+    - mysql.openstack_dbschema
+    - queue.rabbit
+    - keystone
+    - keystone.openstack_tenants
+    - keystone.openstack_users
+    - keystone.openstack_services
+    - glance
+    - nova
+    - horizon
+  network: 
+    - generics.havana_cloud_repo
+    - generics.apt-proxy
+    - generics.headers
+    - generics.host
+    - neutron
+    - neutron.openvswitch
+  compute: 
+    - generics.havana_cloud_repo
+    - generics.apt-proxy
+    - generics.headers
+    - generics.host
+    - nova.compute_kvm
+    - neutron.openvswitch
+  compute: 
+    - generics.havana_cloud_repo
+    - generics.apt-proxy
+    - generics.headers
+    - generics.host
+    - nova.compute_kvm
+    - neutron.openvswitch
+  queue_server:
+    - queue.rabbit
 </pre>
 
 Then edit your 'pillar/top.sls' and point jupiter to use 'openstack_cluster.sls'
 
 <pre>
-havana:
-  mercury: [openstack_cluster]
-  venus: [openstack_cluster]
-  jupiter: [openstack_cluster]
+icehouse:
+  mercury:
+    - openstack_cluster
+  venus:
+    - openstack_cluster
+  jupiter:
+    - openstack_cluster
 </pre>
 
 Then sync up the cluster as shown below.
@@ -284,20 +264,23 @@ Adding new compute node
 Adding a new machine to a cluster is as easy as editing a json file. All you have to do is edit 'pillar/openstack_cluster.sls' as below.
 
 <pre>
-"compute": [
-        "venus",
-        "saturn"
-    ]
+compute:
+  - venus
+  - saturn
 </pre>
 
 Then edit your 'pillar/top.sls' and point saturn to use 'openstack_cluster.sls'
 
 <pre>
 havana:
-  mercury: [openstack_cluster]
-  venus: [openstack_cluster]
-  jupiter: [openstack_cluster]
-  saturn: [openstack_cluster]
+  mercury:
+   - openstack_cluster
+  venus:
+   - openstack_cluster
+  jupiter:
+   - openstack_cluster
+  saturn:
+   - openstack_cluster
 </pre>
 
 Then sync up the cluster as shown below.
@@ -315,31 +298,25 @@ OVS Vlan mode networking
 The default configuration will install a vlan mode network. Have a close look at the configuration.
 
 <pre>
-    "neutron": {
-	"metadata_secret": "414c66b22b1e7a20cc35",
-	"intergration_bridge": "br-int",
-	"network_mode": "vlan",
-	"venus": {
-		"Intnet1": {
-			"start_vlan": "100",
-			"end_vlan": "200",
-			"bridge": "br-eth1",
-			"interface": "eth1"
-		}
-	},
-	"mercury": {
-		"Intnet1": {
-			"start_vlan": "100",
-			"end_vlan": "200",
-			"bridge": "br-eth1",
-			"interface": "eth1"
-		},
-		"Extnet": {
-			"bridge": "br-ex",
-			"interface": "eth2"
-		}
-	}
-    }
+neutron: 
+  metadata_secret: 414c66b22b1e7a20cc35
+  intergration_bridge: br-int
+  network_mode: vlan
+  venus: 
+    Intnet1: 
+      start_vlan: 100
+      end_vlan: 200
+      bridge: br-eth1
+      interface: eth1
+  mercury: 
+    Intnet1: 
+      start_vlan: 100
+      end_vlan: 200
+      bridge: br-eth1
+      interface: eth1
+    Extnet: 
+      bridge: br-ex
+      interface: eth2
 </pre>
 For each node "venus", "mercury" etc you specify the physical_networks, the start and end vlan id in that physnet, the bridge that is connected to the physnet and the interface that should be present in the brdige. For flat network do not provide any start and end vlan. 
 
@@ -350,14 +327,13 @@ OVS GRE mode networking
 If GRE mode networking is desired please alter the pillar file as below.
 
 <pre>
-    "neutron": {
-	"metadata_secret": "414c66b22b1e7a20cc35",
-	"intergration_bridge": "br-int",
-	"network_mode": "tunnel",
-	"tunnel_start": "100",
-	"tunnel_end": "200",
-	"tunnel_type": "gre"
-    }
+neutron: 
+  metadata_secret: 414c66b22b1e7a20cc35
+  intergration_bridge: br-int
+  network_mode: tunnel
+  tunnel_start: 100
+  tunnel_end: 200
+  tunnel_type: gre
 </pre>
 
 
@@ -367,14 +343,12 @@ OVS VXLAN mode networking
 If VXLAN mode networking is desired please alter the pillar file as below.
 
 <pre>
-    "neutron": {
-	"metadata_secret": "414c66b22b1e7a20cc35",
-	"intergration_bridge": "br-int",
-	"network_mode": "tunnel",
-	"tunnel_start": "100",
-	"tunnel_end": "200",
-	"tunnel_type": "vxlan"
-    }
+  metadata_secret: 414c66b22b1e7a20cc35
+  intergration_bridge: br-int
+  network_mode: tunnel
+  tunnel_start: 100
+  tunnel_end: 200
+  tunnel_type: vxlan
 </pre>
 
 
