@@ -107,7 +107,7 @@ salt -C 'I@cluster_type:openstack' state.highstate
 </pre>
 
 
-This instructs all the minions those who have 'cluster_type=openstack' defined in their pillar data to download all the state defined for them and execute the same. If all goes well you can login to your newly installed openstack setup 'http://mercury/horizon'.
+This instructs all the minions those who have 'cluster_type=openstack' defined in their pillar data to download all the state defined for them and execute the same. If all goes well you can login to your newly installed openstack setup 'http://mercury/'.
 
 
 Note
@@ -261,7 +261,7 @@ salt -C 'I@cluster_type:openstack' state.highstate
 Adding new compute node
 =======================
 
-Adding a new machine to a cluster is as easy as editing a json file. All you have to do is edit 'pillar/openstack_cluster.sls' as below.
+Adding a new machine to a cluster is as easy as editing a sls file. All you have to do is edit 'pillar/openstack_cluster.sls' as below.
 
 <pre>
 compute:
@@ -272,7 +272,7 @@ compute:
 Then edit your 'pillar/top.sls' and point saturn to use 'openstack_cluster.sls'
 
 <pre>
-havana:
+icehouse:
   mercury:
    - openstack_cluster
   venus:
