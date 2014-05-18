@@ -39,7 +39,7 @@ neutron:
       interface: eth2
 install: 
   controller: 
-    - generics.havana_cloud_repo
+    - generics.icehouse_cloud_repo
     - generics.apt-proxy
     - generics.headers
     - generics.host
@@ -55,14 +55,14 @@ install:
     - nova
     - horizon
   network: 
-    - generics.havana_cloud_repo
+    - generics.icehouse_cloud_repo
     - generics.apt-proxy
     - generics.headers
     - generics.host
     - neutron
     - neutron.openvswitch
   compute: 
-    - generics.havana_cloud_repo
+    - generics.icehouse_cloud_repo
     - generics.apt-proxy
     - generics.headers
     - generics.host
@@ -134,7 +134,7 @@ network:
   - mercury
 install: 
   controller: 
-    - generics.havana_cloud_repo
+    - generics.icehouse_cloud_repo
     - generics.apt-proxy
     - generics.headers
     - generics.host
@@ -150,14 +150,14 @@ install:
     - nova
     - horizon
   network: 
-    - generics.havana_cloud_repo
+    - generics.icehouse_cloud_repo
     - generics.apt-proxy
     - generics.headers
     - generics.host
     - neutron
     - neutron.openvswitch
   compute: 
-    - generics.havana_cloud_repo
+    - generics.icehouse_cloud_repo
     - generics.apt-proxy
     - generics.headers
     - generics.host
@@ -197,7 +197,7 @@ queue_server:
   - jupiter
 install: 
   controller: 
-    - generics.havana_cloud_repo
+    - generics.icehouse_cloud_repo
     - generics.apt-proxy
     - generics.headers
     - generics.host
@@ -213,21 +213,21 @@ install:
     - nova
     - horizon
   network: 
-    - generics.havana_cloud_repo
+    - generics.icehouse_cloud_repo
     - generics.apt-proxy
     - generics.headers
     - generics.host
     - neutron
     - neutron.openvswitch
   compute: 
-    - generics.havana_cloud_repo
+    - generics.icehouse_cloud_repo
     - generics.apt-proxy
     - generics.headers
     - generics.host
     - nova.compute_kvm
     - neutron.openvswitch
   compute: 
-    - generics.havana_cloud_repo
+    - generics.icehouse_cloud_repo
     - generics.apt-proxy
     - generics.headers
     - generics.host
