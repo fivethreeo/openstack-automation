@@ -72,7 +72,7 @@ hosts:
   mercury: mercury_ip_here
   venus: venus_ip_here
   saturn: saturn_ip_here
-  salt: sat_master_ip_here
+  salt: salt_master_ip_here
 
 </pre>
 
