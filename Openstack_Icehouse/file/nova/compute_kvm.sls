@@ -56,24 +56,33 @@ nova-conf-kvm:
     - sections:
         DEFAULT:
           region_list: "['RegionOne']"
-          vnc_enabled: "True"
-          neutron_auth_strategy: keystone
-          neutron_admin_auth_url: http://{{ salt['cluster_ops.get_candidate']('keystone') }}:35357/v2.0
-          neutron_admin_username: neutron
-          neutron_admin_tenant_name: service
-          neutron_url: http://{{ salt['cluster_ops.get_candidate']('neutron') }}:9696
-          rabbit_host: {{ salt['cluster_ops.get_candidate'](pillar['queue-engine']) }}
-          my_ip: {{ grains['id'] }}
-          security_group_api: neutron
-          vncserver_listen: "0.0.0.0"
-          neutron_admin_password: {{ pillar['keystone']['tenants']['service']['users']['neutron']['password'] }}
-          glance_host: {{ salt['cluster_ops.get_candidate']('glance') }}
+  
+          my_ip: {{ grains['id'] }}      
+  
+          volume_api_class: nova.volume.cinder.API
+          rpc_backend: nova.rpc.impl_kombu
           firewall_driver: nova.virt.firewall.NoopFirewallDriver
           network_api_class: nova.network.neutronv2.api.API
-          vncserver_proxyclient_address: {{ grains['id'] }}
-          rpc_backend: nova.rpc.impl_kombu
-          novncproxy_base_url: http://{{ salt['cluster_ops.get_candidate']('nova') }}:6080/vnc_auto.html
+  
           auth_strategy: keystone
+          security_group_api: neutron
+  
+          rabbit_host: {{ salt['cluster_ops.get_candidate'](pillar['queue-engine']) }}
+  
+          neutron_auth_strategy: keystone
+          neutron_admin_tenant_name: service
+          neutron_admin_auth_url: http://{{ salt['cluster_ops.get_candidate']('keystone') }}:35357/v2.0
+          neutron_url: http://{{ salt['cluster_ops.get_candidate']('neutron') }}:9696
+          neutron_admin_username: neutron
+          neutron_admin_password: {{ pillar['keystone']['tenants']['service']['users']['neutron']['password'] }}
+          vncserver_listen: "0.0.0.0"
+          vncserver_proxyclient_address: {{ grains['id'] }}
+  
+          vnc_enabled: "True"
+          novncproxy_base_url: http://{{ salt['cluster_ops.get_candidate']('nova') }}:6080/vnc_auto.html
+  
+          glance_host: {{ salt['cluster_ops.get_candidate']('glance') }}
+
         keystone_authtoken:
           auth_protocol: http
           admin_user: nova 

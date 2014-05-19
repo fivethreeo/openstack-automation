@@ -58,39 +58,47 @@ nova-conf:
     - options_present
     - name: /etc/nova/nova.conf
     - sections: 
-        DEFAULT: 
-          firewall_driver: "nova.virt.firewall.NoopFirewallDriver"
+        DEFAULT:           
           region_list: "['RegionOne']"
-          ec2_dmz_host: "{{ salt['cluster_ops.get_candidate']('nova') }}"
-          service_neutron_metadata_proxy: "true"
+  
+          my_ip: {{ grains['id'] }}      
+    
+          volume_api_class: nova.volume.cinder.API
+          rpc_backend: nova.rpc.impl_kombu
+          firewall_driver: nova.virt.firewall.NoopFirewallDriver
+          network_api_class: nova.network.neutronv2.api.API
+  
+          auth_strategy: keystone
+          security_group_api: neutron
+                    
+          rabbit_host: {{ salt['cluster_ops.get_candidate'](pillar['queue-engine']) }}
+          
+          lockout_attempts: 5
+          lockout_window: 15
+          lockout_minutes: 15
+
+          service_neutron_metadata_proxy: "True"
           neutron_auth_strategy: keystone
+          neutron_admin_tenant_name: service
           neutron_admin_auth_url: http://{{ salt['cluster_ops.get_candidate']('keystone') }}:35357/v2.0
           neutron_url: http://{{ salt['cluster_ops.get_candidate']('neutron') }}:9696
           neutron_admin_username: neutron
           neutron_admin_password: {{ pillar['keystone']['tenants']['service']['users']['neutron']['password'] }}
-          rabbit_host: {{ salt['cluster_ops.get_candidate'](pillar['queue-engine']) }}
-          my_ip: {{ grains['id'] }}
-          lockout_attempts: "5"
-          vncserver_listen: "{{ salt['cluster_ops.get_candidate']('nova') }}"
-          ec2_host: "{{ salt['cluster_ops.get_candidate']('nova') }}"
-          ec2_path: "/services/Cloud"
-          keystone_ec2_url: "http://{{ salt['cluster_ops.get_candidate']('nova') }}:5000/v2.0/ec2tokens"
-          auth_strategy: "keystone"
-          ec2_timestamp_expiry: "300"
-          network_api_class: "nova.network.neutronv2.api.API"
-          ec2_port: "8773"
-          neutron_metadata_proxy_shared_secret: "{{ pillar['neutron']['metadata_secret'] }}"
-          lockout_minutes: "15"
-          ec2_strict_validation: "True"
-          ec2_listen_port: "8773"
-          ec2_listen: "0.0.0.0"
-          lockout_window: "15"
-          neutron_admin_tenant_name: "service"
-          security_group_api: "neutron"
-          ec2_sheme: "http"
+          neutron_metadata_proxy_shared_secret: {{ pillar['neutron']['metadata_secret'] }}
+  
+          vncserver_listen: {{ salt['cluster_ops.get_candidate']('nova') }}
           vncserver_proxyclient_address: {{ salt['cluster_ops.get_candidate']('nova') }}
-          rpc_backend: nova.rpc.impl_kombu
-          volume_api_class: "nova.volume.cinder.API"
+
+          ec2_dmz_host: {{ salt['cluster_ops.get_candidate']('nova') }}
+          ec2_port: 8773
+          ec2_strict_validation: "True"
+          ec2_listen_port: 8773
+          ec2_listen: "0.0.0.0"
+          ec2_sheme: http
+          ec2_host: {{ salt['cluster_ops.get_candidate']('nova') }}
+          ec2_path: /services/Cloud
+          ec2_timestamp_expiry: 300
+          keystone_ec2_url: http://{{ salt['cluster_ops.get_candidate']('nova') }}:5000/v2.0/ec2tokens
         database: 
           connection: mysql://{{ pillar['mysql']['nova']['username'] }}:{{ pillar['mysql']['nova']['password'] }}@{{ salt['cluster_ops.get_candidate']('mysql') }}/nova
     - require: 
