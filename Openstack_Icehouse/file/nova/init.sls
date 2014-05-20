@@ -68,7 +68,7 @@ nova-conf:
   
           my_ip: {{ grains['id'] }}      
     
-          volume_api_class: nova.volume.cinder.API
+          #volume_api_class: nova.volume.cinder.API
           rpc_backend: nova.rpc.impl_kombu
           firewall_driver: nova.virt.firewall.NoopFirewallDriver
           network_api_class: nova.network.neutronv2.api.API
