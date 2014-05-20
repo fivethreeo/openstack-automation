@@ -8,6 +8,7 @@ nova:
     - home: /var/lib/nova
     - createhome: false
     - system: true
+    
 nova-services: 
   pkg:
     - installed
@@ -136,7 +137,7 @@ nova-api-paste-opt:
         composite:ec2: 
           /services/Admin: "ec2cloud"
     - require: 
-        - file: nova-api-paste
+      - file: nova-api-paste
       
 nova-api-paste-sec:
   ini: 
@@ -145,5 +146,5 @@ nova-api-paste-sec:
     - sections:
       - filter:authtoken
     - require: 
-        - file: nova-api-paste
+      - file: nova-api-paste
 
