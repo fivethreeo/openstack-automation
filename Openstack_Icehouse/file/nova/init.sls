@@ -35,7 +35,6 @@ nova-services:
       - ini: nova-conf
       - file: nova-api-paste
       - ini: nova-api-paste-opt
-      - ini: nova-api-paste-sec
       
 nova_sync: 
   cmd: 
@@ -135,16 +134,13 @@ nova-api-paste-opt:
     - name: /etc/nova/api-paste.ini
     - sections: 
         composite:ec2: 
-          /services/Admin: "ec2cloud"
-    - require: 
-      - file: nova-api-paste
-      
-nova-api-paste-sec:
-  ini: 
-    - sections_absent
-    - name: /etc/nova/api-paste.ini
-    - sections:
-      - filter:authtoken
+          /services/Admin: ec2cloud
+        filter:authtoken:
+          auth_protocol: http
+          admin_user: nova 
+          admin_password: {{ pillar['keystone']['tenants']['service']['users']['nova']['password'] }}
+          auth_host: {{ salt['cluster_ops.get_candidate']('keystone') }}
+          admin_tenant_name: service
     - require: 
       - file: nova-api-paste
 
