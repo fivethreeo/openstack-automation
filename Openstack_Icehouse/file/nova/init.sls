@@ -32,19 +32,24 @@ nova-services:
       - nova-consoleauth
     - watch: 
       - ini: nova-conf
-      - ini: nova-api-paste
+      - file: nova-api-paste
+      - ini: nova-api-paste-opt
+      - ini: nova-api-paste-sec
+      
 nova_sync: 
   cmd: 
     - run
     - name: {{ pillar['mysql']['nova']['sync'] }}
     - require: 
       - service: nova-services
+      
 nova_sqlite_delete: 
   file: 
     - absent
     - name: /var/lib/nova/nova.sqlite
     - require: 
       - pkg: nova-services
+
 nova-conf: 
   file: 
     - managed
@@ -122,7 +127,8 @@ nova-api-paste:
     - mode: 644
     - require: 
       - pkg: nova-services
-
+      
+nova-api-paste-opt:
   ini: 
     - options_present
     - name: /etc/nova/api-paste.ini
@@ -131,7 +137,8 @@ nova-api-paste:
           /services/Admin: "ec2cloud"
     - require: 
         - file: nova-api-paste
-
+      
+nova-api-paste-sec:
   ini: 
     - sections_absent
     - name: /etc/nova/api-paste.ini

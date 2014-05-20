@@ -11,6 +11,7 @@ nova-compute:
     - watch:
       - pkg: nova-compute
       - ini: nova-compute
+      - ini: nova-conf-kvm
   file:
     - managed
     - name: /etc/nova/nova-compute.conf
@@ -90,6 +91,7 @@ nova-conf-kvm:
           auth_host: {{ salt['cluster_ops.get_candidate']('keystone') }}
           admin_tenant_name: service
           auth_port: 35357
+          
         database:
           connection: mysql://{{ pillar['mysql']['nova']['username'] }}:{{ pillar['mysql']['nova']['password'] }}@{{ salt['cluster_ops.get_candidate']('mysql') }}/nova
     - require:
@@ -104,7 +106,8 @@ nova-api-paste-kvm:
     - mode: 644
     - require:
       - pkg: nova-compute
-
+      
+nova-api-paste-kvm-opt:
   ini: 
     - options_present
     - name: /etc/nova/api-paste.ini
@@ -113,7 +116,8 @@ nova-api-paste-kvm:
           /services/Admin: "ec2cloud"
     - require:
       - file: nova-api-paste-kvm
-
+      
+nova-api-paste-kvm-sec:
   ini: 
     - sections_absent
     - name: /etc/nova/api-paste.ini
