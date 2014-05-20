@@ -99,10 +99,20 @@ nova-conf:
           ec2_path: /services/Cloud
           ec2_timestamp_expiry: 300
           keystone_ec2_url: http://{{ salt['cluster_ops.get_candidate']('nova') }}:5000/v2.0/ec2tokens
+          
+        keystone_authtoken:
+          auth_protocol: http
+          admin_user: nova 
+          admin_password: {{ pillar['keystone']['tenants']['service']['users']['nova']['password'] }}
+          auth_host: {{ salt['cluster_ops.get_candidate']('keystone') }}
+          admin_tenant_name: service
+          auth_port: 35357
+          
         database: 
           connection: mysql://{{ pillar['mysql']['nova']['username'] }}:{{ pillar['mysql']['nova']['password'] }}@{{ salt['cluster_ops.get_candidate']('mysql') }}/nova
     - require: 
         - file: nova-conf
+        
 nova-api-paste: 
   file: 
     - managed
@@ -112,18 +122,21 @@ nova-api-paste:
     - mode: 644
     - require: 
       - pkg: nova-services
+
   ini: 
     - options_present
     - name: /etc/nova/api-paste.ini
     - sections: 
-        filter:authtoken: 
-          identity_uri: "http://{{ salt['cluster_ops.get_candidate']('keystone') }}:35357/"
-          auth_uri: "http://{{ salt['cluster_ops.get_candidate']('keystone') }}:5000/"
-          admin_user: "admin"
-          admin_password: "admin_pass"
-          admin_tenant_name: "admin"
         composite:ec2: 
           /services/Admin: "ec2cloud"
+    - require: 
+        - file: nova-api-paste
+
+  ini: 
+    - sections_absent
+    - name: /etc/nova/api-paste.ini
+    - sections:
+      - filter:authtoken
     - require: 
         - file: nova-api-paste
 

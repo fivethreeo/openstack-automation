@@ -104,16 +104,21 @@ nova-api-paste-kvm:
     - mode: 644
     - require:
       - pkg: nova-compute
-  ini:
+
+  ini: 
     - options_present
     - name: /etc/nova/api-paste.ini
-    - sections:
-        filter:authtoken:
-          auth_protocol: http
-          admin_user: nova 
-          admin_password: {{ pillar['keystone']['tenants']['service']['users']['nova']['password'] }}
-          auth_host: {{ salt['cluster_ops.get_candidate']('keystone') }}
-          admin_tenant_name: service 
-          auth_port: 35357
+    - sections: 
+        composite:ec2: 
+          /services/Admin: "ec2cloud"
     - require:
       - file: nova-api-paste-kvm
+
+  ini: 
+    - sections_absent
+    - name: /etc/nova/api-paste.ini
+    - sections:
+      - filter:authtoken
+    - require:
+      - file: nova-api-paste-kvm
+
