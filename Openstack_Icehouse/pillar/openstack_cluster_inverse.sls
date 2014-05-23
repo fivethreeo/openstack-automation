@@ -18,15 +18,6 @@ keystone.tenant: admin
 cluster_type: openstack
 pkg_proxy_url: http://salt:3142
 queue-engine: queue.rabbit
-cloud_repos: 
-  - 
-    reponame: havana-cloud-bin
-    name: deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/icehouse main
-    file: /etc/apt/sources.list.d/cloudarchive-icehouse.list
-  - 
-    reponame: havana-cloud-src
-    name: deb-src http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/icehouse main
-    file: /etc/apt/sources.list.d/cloudarchive-icehouse-src.list
 install: 
   controller: 
     - inverse.generics.havana_cloud_repo
