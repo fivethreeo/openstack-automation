@@ -1,3 +1,4 @@
+{% if 'cloud_repos' in pillar %}
 
 {% for repo in pillar['cloud_repos'] %}
 
@@ -10,6 +11,7 @@
       - pkg: cloud-repo-keyring
 
 {% endfor %}
+
 
 {% if grains['os'] == 'Ubuntu' %}
 
@@ -25,3 +27,4 @@ cloud-keyring-refresh-repo:
     - run
     - name: saltutil.sync_all
 
+{% endif %}
