@@ -18,15 +18,6 @@ keystone.password: admin_pass
 keystone.tenant: admin
 cluster_type: openstack
 queue-engine: queue.rabbit
-cloud_repos: 
-  - 
-    reponame: havana-cloud-bin
-    name: deb http://ubuntu-cloud.archive.canonical.com/ubuntu cloud-archive/icehouse main
-    file: /etc/apt/sources.list.d/cloudarchive-icehouse.list
-  - 
-    reponame: havana-cloud-src
-    name: deb-src http://ubuntu-cloud.archive.canonical.com/ubuntu cloud-archive/icehouse main
-    file: /etc/apt/sources.list.d/cloudarchive-icehouse-src.list
 mysql: 
   nova: 
     username: nova
