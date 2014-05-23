@@ -70,6 +70,7 @@ neutron-conf:
           rabbit_host: {{ salt['cluster_ops.get_candidate'](pillar['queue-engine']) }}
           neutron_metadata_proxy_shared_secret: {{ pillar['neutron']['metadata_secret'] }}
           service_neutron_metadata_proxy: "true"
+          service_plugins: neutron.services.l3_router.l3_router_plugin.L3RouterPlugin
           auth_strategy: keystone
           rpc_backend: neutron.openstack.common.rpc.impl_kombu
         keystone_authtoken:
