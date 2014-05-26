@@ -116,7 +116,7 @@ neutron:
   metadata_secret: 414c66b22b1e7a20cc35
   intergration_bridge: br-int
   network_mode: vlan
-  saltvikprime: 
+  mercury: 
     Intnet1: 
       start_vlan: 100
       end_vlan: 200

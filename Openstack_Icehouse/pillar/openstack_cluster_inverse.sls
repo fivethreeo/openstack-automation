@@ -20,7 +20,7 @@ pkg_proxy_url: http://salt:3142
 queue-engine: queue.rabbit
 install: 
   controller: 
-    - inverse.generics.havana_cloud_repo
+    - inverse.generics.icehouse_cloud_repo
     - inverse.generics.apt-proxy
     - inverse.generics.headers
     - inverse.generics.host
@@ -32,14 +32,14 @@ install:
     - inverse.nova
     - inverse.horizon
   network: 
-    - inverse.generics.havana_cloud_repo
+    - inverse.generics.icehouse_cloud_repo
     - inverse.generics.apt-proxy
     - inverse.generics.headers
     - inverse.generics.host
     - inverse.neutron
     - inverse.neutron.openvswitch
   compute: 
-    - inverse.generics.havana_cloud_repo
+    - inverse.generics.icehouse_cloud_repo
     - inverse.generics.apt-proxy
     - inverse.generics.headers
     - inverse.generics.host
