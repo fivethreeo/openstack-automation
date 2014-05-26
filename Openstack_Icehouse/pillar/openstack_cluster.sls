@@ -4,11 +4,11 @@ cluster_entities:
   - controller
   - network
 compute: 
-  - saltvikprime
+  - saturn
 controller: 
-  - saltvikprime
+  - mercury
 network: 
-  - saltvikprime
+  - mercury
 cluster_name: openstack_cluster
 keystone.auth_url: http://saltvikprime:5000/v2.0
 keystone.endpoint: http://saltvikprime:35357/v2.0
@@ -154,5 +154,7 @@ install:
     - generics.host
     - nova.compute_kvm
     - neutron.openvswitch
-hosts: 
-  salt: 192.168.0.7
+hosts:
+  saturn: saturn_ip
+  mercury: saturn_ip
+  salt: salt_master ip

@@ -9,7 +9,6 @@
       - pkg: cloud-repo-keyring
 {% endfor %}
 
-
 {% if grains['os'] == 'Ubuntu' %}
 cloud-repo-keyring:
   pkg:
@@ -18,9 +17,8 @@ cloud-repo-keyring:
 {% endif %}
 
 cloud-keyring-refresh-repo:
-  module:
+  module
     - run
     - name: saltutil.sync_all
-    
+
 {% endif %}
-  
