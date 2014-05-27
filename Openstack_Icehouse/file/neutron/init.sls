@@ -29,7 +29,7 @@ neutron-server:
         keystone_authtoken:
           admin_tenant_name: service 
           admin_user: neutron
-          auth_url: http://{{ salt['cluster_ops.get_candidate']('keystone') }}:35357/v2.0
+          auth_port: 35357
           admin_password: {{ pillar['keystone']['tenants']['service']['users']['neutron']['password'] }}
           auth_host: {{ salt['cluster_ops.get_candidate']('keystone') }}
         service_providers:
